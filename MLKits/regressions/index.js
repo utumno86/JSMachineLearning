@@ -13,7 +13,7 @@ let { features, labels, testFeatures, testLabels } = loadCSV('./cars.csv', {
 
 const regression = new LinearRegression(features, labels, {
   learningRate: 0.1,
-  iterations: 20,
+  iterations: 100,
 });
 
 regression.train();
@@ -21,8 +21,9 @@ regression.train();
 const r2 = regression.test(testFeatures, testLabels);
 
 plot({
-  x: regression.mseHistory.reverse(),
-  xLabel: 'Iteration #',
+  x: regression.bHistory,
+  y: regression.mseHistory.reverse(),
+  xLabel: 'Value of B',
   yLabel: 'Mean Squared Error',
 });
 console.log('R2: ', r2);
