@@ -6,7 +6,6 @@ class LinearRegression {
     this.features = this.processFeatures(features);
     this.labels = tf.tensor(labels);
     this.mseHistory = [];
-    this.bHistory = [];
 
     this.options = Object.assign({
       learningRate: 0.1,
@@ -47,7 +46,6 @@ class LinearRegression {
 
   train() {
     for (let i = 0; i < this.options.iterations; i++) {
-      this.bHistory.push(this.weights.get(0, 0));
       this.gradientDescent();
       this.recordMSE();
       this.updateLearningRate();
