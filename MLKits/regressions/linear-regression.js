@@ -46,6 +46,7 @@ class LinearRegression {
 
   train() {
     for (let i = 0; i < this.options.iterations; i++) {
+      console.log(this.options.learningRate);
       this.gradientDescent();
       this.recordMSE();
       this.updateLearningRate();
@@ -110,7 +111,7 @@ class LinearRegression {
     if (this.mseHistory[0] > this.mseHistory[1]) {
       this.options.learningRate /= 2;
     } else {
-      this.options.learningRate += 1.05;
+      this.options.learningRate *= 1.05;
     }
   }
 }
