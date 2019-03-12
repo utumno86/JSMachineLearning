@@ -13,7 +13,7 @@ let { features, labels, testFeatures, testLabels } = loadCSV('./cars.csv', {
 
 const regression = new LinearRegression(features, labels, {
   learningRate: 0.1,
-  iterations: 100,
+  iterations: 3,
   batchSize: 10,
 });
 
@@ -27,3 +27,7 @@ plot({
   yLabel: 'Mean Squared Error',
 });
 console.log('R2: ', r2);
+
+regression.predict([
+  [120, 380, 2],
+]).print();
