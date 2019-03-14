@@ -11,6 +11,7 @@ class LogisticRegression {
       learningRate: 0.1,
       iterations: 3,
       batchSize: 1,
+      decisionBoundary: 0.5,
     }, options);
 
     this.weights = tf.zeros([this.features.shape[1], 1]);
@@ -45,7 +46,11 @@ class LogisticRegression {
   }
 
   predict(observations) {
-    return this.processFeatures(observations).matMul(this.weights).sigmoid();
+    return this.processFeatures(observations)
+      .matMul(this.weights)
+      .sigmoid()
+      .greater(this.options.decisionBoundary)
+      .cast('float32');
   }
 
   test(testFeatures, testLabels) {
