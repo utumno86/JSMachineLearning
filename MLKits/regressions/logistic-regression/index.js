@@ -30,3 +30,5 @@ regression.train();
 regression.predict([
   [88, 97, 1.065],
 ]).print();
+
+console.log(regression.test(testFeatures, testLabels));
