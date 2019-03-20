@@ -1,0 +1,13 @@
+{
+  "name": "loadcsv",
+  "version": "1.0.0",
+  "description": "loading csv",
+  "main": "index.js",
+  "author": "utumno86",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "lodash": "^4.17.11",
+    "shuffle-seed": "^1.1.6"
+  }
+}
