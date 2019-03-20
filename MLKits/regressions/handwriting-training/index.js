@@ -23,8 +23,8 @@ const {features, labels } = loadData();
 
 const regression = new LogisticRegression(features, labels, {
   learningRate: 1,
-  iterations: 20,
-  batchSize: 100,
+  iterations: 30,
+  batchSize: 500,
 });
 regression.train();
 
@@ -38,3 +38,7 @@ const testEncodedLabels = testMnistData.labels.values.map(label => {
 
 const accuracy = regression.test(testFeatures, testEncodedLabels);
 console.log('Accuracy is', accuracy);
+
+plot({
+  x: regression.costHistory,
+});
