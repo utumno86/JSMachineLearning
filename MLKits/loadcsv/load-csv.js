@@ -1,5 +1,6 @@
 const fs = require('fs');
-const _ = require('lodash')
+const _ = require('lodash');
+const shuffleSeed = require('shuffle-seed');
 
 function extractColumns(data, columnNames) {
   const headers = _.first(data);
@@ -10,7 +11,12 @@ function extractColumns(data, columnNames) {
   return extracted;
 }
 
-function loadCSV(fileName, { converters = {}, dataColumns = [], labelColumns = [] }) {
+function loadCSV(fileName, {
+  converters = {},
+  dataColumns = [],
+  labelColumns = [],
+  shuffle = false,
+}) {
   let data = fs.readFileSync(fileName, { encoding: 'utf-8' });
   data = data.split('\n').map(row => row.split(','));
   data = data.map(row => _.dropRightWhile(row, val => val === ''));
@@ -22,7 +28,6 @@ function loadCSV(fileName, { converters = {}, dataColumns = [], labelColumns = [
     }
 
     return row.map((element, index) => {
-
       if (converters[headers[index]]) {
         const converted = converters[headers[index]](element);
         return _.isNaN(converted) ? element : converted;
@@ -38,12 +43,19 @@ function loadCSV(fileName, { converters = {}, dataColumns = [], labelColumns = [
   data.shift();
   labels.shift();
 
+  if (shuffle) {
+    data = shuffleSeed.shuffle(data, 'phrase');
+    labels = shuffleSeed.shuffle(labels, 'phrase');
+  }
+
   console.log(data);
+  console.log(labels);
 }
 
 loadCSV('data.csv', {
   dataColumns: ['height', 'value'],
   labelColumns: ['passed'],
+  shuffle: true,
   converters: {
     passed: val => val === 'TRUE',
   },
