@@ -16,6 +16,7 @@ function loadCSV(fileName, {
   dataColumns = [],
   labelColumns = [],
   shuffle = false,
+  splitTest = false,
 }) {
   let data = fs.readFileSync(fileName, { encoding: 'utf-8' });
   data = data.split('\n').map(row => row.split(','));
@@ -48,15 +49,36 @@ function loadCSV(fileName, {
     labels = shuffleSeed.shuffle(labels, 'phrase');
   }
 
-  console.log(data);
-  console.log(labels);
+  if (splitTest) {
+    const trainSize = _.isNumber(splitTest) ? splitTest : Math.floor(data.length / 2);
+
+    return {
+      features: data.slice(trainSize),
+      labels: labels.slice(trainSize),
+      testFeatures: data.slice(0, trainSize),
+      testLabels: labels.slice(0, trainSize),
+    };
+  }
+
+  return { features: data, labels };
 }
 
-loadCSV('data.csv', {
+const {
+  features,
+  labels,
+  testFeatures,
+  testLabels,
+} = loadCSV('data.csv', {
   dataColumns: ['height', 'value'],
   labelColumns: ['passed'],
   shuffle: true,
+  splitTest: 1,
   converters: {
     passed: val => val === 'TRUE',
   },
 });
+
+console.log("Features", features);
+console.log("Labels", labels);
+console.log("Test Features", testFeatures);
+console.log("Test Labels", testLabels);
